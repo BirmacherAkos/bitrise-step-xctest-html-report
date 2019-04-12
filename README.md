@@ -14,7 +14,7 @@ added to your `.bitrise.secrets.yml` file!*
 
 Step by step:
 
-1. Open up your Terminal / Command Line
+1. Open up your Terminal / Command Line 
 2. `git clone` the repository
 3. `cd` into the directory of the step (the one you just `git clone`d)
 5. Create a `.bitrise.secrets.yml` file in the same directory of `bitrise.yml`
