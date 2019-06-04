@@ -2,7 +2,7 @@
 
 Generate Xcode-like HTML report for Unit and UI Tests with [XCTestHTMLReport](https://github.com/TitouanVanBelle/XCTestHTMLReport)
 
-## Current release
+
 
 ![GitHub release](https://img.shields.io/github/release/BirmacherAkos/bitrise-step-xctest-html-report.svg)
 ![GitHub Release Date](https://img.shields.io/github/release-date/BirmacherAkos/bitrise-step-xctest-html-report.svg)
