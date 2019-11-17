@@ -15,14 +15,15 @@ import (
 // Config ...
 type Config struct {
 	// XCHTMLReport
-	TestResults   string `env:"test_result_path,required"`
-	GenerateJUnit bool   `env:"generate_junit,required"`
+	TestResults   string        `env:"test_result_path,required"`
+	GenerateJUnit bool          `env:"generate_junit,opt[yes,no]"`
+	Branch        InstallBranch `env:"install_branch,opt[master,develop]"`
 
 	// Common
 	OutputDir string `env:"output_dir,dir"`
 
 	// Log
-	Verbose bool `env:"verbose,required"`
+	Verbose bool `env:"verbose,opt[yes,no]"`
 }
 
 // exportReports will search for the generated html and junit report
@@ -105,7 +106,7 @@ func main() {
 	{
 		log.Infof("Install XCTestHTMLReport via brew")
 
-		cmd := x.installCmd()
+		cmd := x.installCmd(cfg.Branch)
 		cmd.SetDir(dir).
 			SetStdout(os.Stdout).
 			SetStderr(os.Stderr)
@@ -113,6 +114,7 @@ func main() {
 		log.Printf("$ %s", cmd.PrintableCommandArgs())
 
 		if err := cmd.Run(); err != nil {
+			log.Warnf("Try to change the install branch of the XCTestHTMLReport")
 			failf("Failed to install XCTestHTMLReport, error: %s", err)
 		}
 
