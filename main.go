@@ -31,7 +31,8 @@ type Config struct {
 func exportReports(pth, outputDir string, generateJUnit bool, errors *[]error) (string, string, error) {
 
 	// Find the generated reports
-	htmlReportPth := path.Join(pth, "index.html")
+	// htmlReportPth := path.Join(pth, "index.html")
+	htmlReportPth := "index.html"
 	junitPth := path.Join(pth, "report.junit")
 
 	//
