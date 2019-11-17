@@ -64,7 +64,7 @@ inputs:
       description: |
         You can select from which branch do you want to install the XCTestHTMLReport.
 
-        **Master** for stable version
+        **Master** for the stable version
         **Develop** for the newest version
       is_required: true
       value_options:
