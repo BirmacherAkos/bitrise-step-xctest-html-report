@@ -170,5 +170,6 @@ func main() {
 		for _, err := range errors {
 			log.Errorf(err.Error())
 		}
+		os.Exit(1)
 	}
 }
