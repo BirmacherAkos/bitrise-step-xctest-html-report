@@ -153,6 +153,7 @@ workflows:
     - path::./:
         title: Test one test result
         run_if: true
+        is_skippable: false
         inputs:
         - test_result_path: $TEST_RESULT_PATH
         - generate_junit: $GENERATE_JUNIT
