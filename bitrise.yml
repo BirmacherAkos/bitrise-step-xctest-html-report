@@ -13,6 +13,22 @@ app:
   - MULTIPLE_TEST_RESULT: "false"
 
 workflows:
+  ci_xcode_10:
+    description:
+      "Changing the install branch to master"
+    envs:
+    - INSTALL_BRANCH: "master"
+    after_run:
+    - ci
+
+  ci_xcode_11:
+    description:
+      "Changing the install branch to develop"
+    envs:
+    - INSTALL_BRANCH: "develop"
+    after_run:
+    - ci
+
   ci:
     before_run:
     - audit-this-step
@@ -157,6 +173,7 @@ workflows:
         - test_result_path: $TEST_RESULT_PATH
         - generate_junit: $GENERATE_JUNIT
         - verbose: $VERBOSE
+        - install_branch: $INSTALL_BRANCH
 
   generate_test:
     envs:
