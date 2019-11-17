@@ -32,34 +32,42 @@ type Config struct {
 func exportReports(pth, outputDir string, generateJUnit bool, errors *[]error) (string, string, error) {
 
 	// Find the generated reports
-	// htmlReportPth := path.Join(pth, "index.html")
-	htmlReportPth := "index.html"
+	htmlReportPths := []string{"index.html", path.Join(pth, "index.html")}
 	junitPth := path.Join(pth, "report.junit")
 
 	//
 	// Check the report files
+	var exportedHTMLReportPth string
+	var exportedJUnitReportPth string
 	{
-		if exists, err := pathutil.IsPathExists(htmlReportPth); err != nil {
-			return "", "", fmt.Errorf("Failed to check if path exists, error: %s", err)
-		} else if !exists {
-			*errors = append(*errors, fmt.Errorf("HTML report does not exists in: %s", htmlReportPth))
+		// HTML report
+		for _, htmlReportPth := range htmlReportPths {
+			if exists, err := pathutil.IsPathExists(htmlReportPth); err != nil {
+				return "", "", fmt.Errorf("Failed to check if path exists, error: %s", err)
+			} else if !exists {
+				log.Debugf("HTML report does not exists in path: %s", htmlReportPth)
+			} else {
+				log.Debugf("Found HTML report in path: %s", htmlReportPth)
+				exportedHTMLReportPth = copy(htmlReportPth, outputDir, errors)
+				break
+			}
+		}
+		if exportedHTMLReportPth == "" {
+			*errors = append(*errors, fmt.Errorf("HTML report does not exists in paths: %s", strings.Join(htmlReportPths, ", ")))
 		}
 
+		// JUNIT
 		if generateJUnit {
 			if exists, err := pathutil.IsPathExists(junitPth); err != nil {
 				return "", "", fmt.Errorf("Failed to check if path exists, error: %s", err)
 			} else if !exists {
+				log.Debugf("JUnit report does not exists in: %s", junitPth)
 				*errors = append(*errors, fmt.Errorf("JUnit report does not exists in: %s", junitPth))
+			} else {
+				log.Debugf("Found JUNIT in path: %s", junitPth)
+				exportedJUnitReportPth = copy(junitPth, outputDir, errors)
 			}
 		}
-	}
-
-	//
-	// Copy reports
-	var exportedJUnitReportPth string
-	exportedHTMLReportPth := copy(htmlReportPth, outputDir, errors)
-	if generateJUnit {
-		exportedJUnitReportPth = copy(junitPth, outputDir, errors)
 	}
 
 	//
