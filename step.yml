@@ -36,7 +36,7 @@ inputs:
         * ./test\_3.xctestresult
       is_required: true
 
-  - generate_junit: "true"
+  - generate_junit: "yes"
     opts:
       title: Generate JUnit report?
       summary: Generate JUnit report?
@@ -44,8 +44,8 @@ inputs:
         Provide JUnit XML output if enabled.
       is_required: true
       value_options:
-        - "true"
-        - "false"
+        - "yes"
+        - "no"
 
   - output_dir: $BITRISE_DEPLOY_DIR
     opts:

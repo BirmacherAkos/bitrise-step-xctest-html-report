@@ -16,7 +16,7 @@ import (
 type Config struct {
 	// XCHTMLReport
 	TestResults   string        `env:"test_result_path,required"`
-	GenerateJUnit bool          `env:"generate_junit,required"`
+	GenerateJUnit bool          `env:"generate_junit,opt[yes,no]"`
 	Branch        InstallBranch `env:"install_branch,opt[master,develop]"`
 
 	// Common
