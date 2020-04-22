@@ -12,7 +12,7 @@ Generate Xcode-like HTML report for Unit and UI Tests with [XCTestHTMLReport](ht
 ![Bitrise](https://img.shields.io/bitrise/dbb0739f4a28d789.svg?token=HI6D8qe117T1G_O9_Wn9ZQ)
 
 Public CI on Bitrise.io\
-https://app.bitrise.io/app/dbb0739f4a28d789#/builds
+https://app.bitrise.io/app/dbb0739f4a28d789#/builds 
 
 # How to 
 Add this step **after** the **Xcode Test for iOS** step. This step will search for the `.xcresult` file in the `$BITRISE_XCRESULT_PATH` by default, because the **Xcode Test for iOS** step will generate it there.\
