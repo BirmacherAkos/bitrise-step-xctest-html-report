@@ -15,6 +15,9 @@ import (
 
 // Config ...
 type Config struct {
+	// Authentication
+	GithubAccessToken stepconf.Secret `env:"github_access_token"`
+
 	// XCHTMLReport
 	TestResults   string        `env:"test_result_path,required"`
 	GenerateJUnit bool          `env:"generate_junit,opt[yes,no]"`
@@ -107,7 +110,7 @@ func main() {
 	version := "latest"
 	if version == "latest" {
 		log.Printf("Latest version selected, identify the latest version on Github")
-		release, err := latestGithubRelease(xcHTMLReportGithubOrg, xcHTMLReportGithubRepo)
+		release, err := latestGithubRelease(xcHTMLReportGithubOrg, xcHTMLReportGithubRepo, cfg.GithubAccessToken)
 		if err != nil {
 			failf("Failed to identify the latest Github release of the XCTestHTMLReport")
 		}

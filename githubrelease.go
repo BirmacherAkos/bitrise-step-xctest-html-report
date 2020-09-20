@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/bitrise-io/go-steputils/stepconf"
 	"github.com/bitrise-io/go-utils/log"
 )
 
@@ -18,11 +19,19 @@ type GithubRelease struct {
 
 // Returns the information of the latest release from the Github API for the provided repository
 // More: https://docs.github.com/en/rest/reference/repos#releases
-func latestGithubRelease(githubOrg, githubRepository string) (GithubRelease, error) {
+func latestGithubRelease(githubOrg, githubRepository string, accessToken stepconf.Secret) (GithubRelease, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/latest", githubOrg, githubRepository)
-	resp, err := http.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return GithubRelease{}, fmt.Errorf("failed to create new request for %s, error: %v", url, err)
+	}
+	req.Header.Set("Authorization", fmt.Sprintf("token %s", string(accessToken)))
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return GithubRelease{}, fmt.Errorf("failed to call the %s, error: %v", url, err)
+	} else if resp.StatusCode != http.StatusOK {
+		return GithubRelease{}, fmt.Errorf("response status %s")
 	}
 
 	log.Debugf("Response status: %s", resp.Status)

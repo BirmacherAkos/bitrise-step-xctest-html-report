@@ -60,6 +60,10 @@ func (x xcTestHTMLReport) installScript() (string, error) {
 		}
 	}()
 
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("response status %s")
+	}
+
 	buf := new(bytes.Buffer)
 	if _, err := buf.ReadFrom(resp.Body); err != nil {
 		return "", fmt.Errorf("failed to copy the response body to a buffer, error: %v", err)

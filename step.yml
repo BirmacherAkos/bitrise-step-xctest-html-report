@@ -22,6 +22,15 @@ toolkit:
     package_name: github.com/BirmacherAkos/bitrise-step-xctest-html-report
 
 inputs:
+  - github_access_token: $GITHUB_ACCESS_TOKEN
+    opts:
+      title: Github Personal Access Token
+      description: |-
+        Use this input to avoid Github rate limit issues.
+        See the github's guide: [Creating an access token for command-line use](https://help.github.com/articles/creating-an-access-token-for-command-line-use/),   
+        how to create Personal Access Token.
+        __UNCHECK EVERY SCOPE BOX__ when creating this token. There is no reason this token needs access to private information.
+      is_sensitive: true
   - test_result_path: $BITRISE_XCRESULT_PATH
     opts:
       title: Xcode test result (.xctesresult) paths
