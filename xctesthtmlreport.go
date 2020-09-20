@@ -20,11 +20,14 @@ const (
 
 const xcHTMLReportRepository string = "https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/%s/xchtmlreport.rb"
 const xcHTMLReportInstallScriptURL string = "https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh"
+const XcHTMLReportGithubOrg string = "TitouanVanBelle"
+const XcHTMLReportGithubRepo string = "XCTestHTMLReport"
 
 type xcTestHTMLReport struct {
 	verbose           bool
 	generateJUnit     bool
 	resultBundlePaths []string
+	version           string
 }
 
 //
@@ -32,6 +35,10 @@ type xcTestHTMLReport struct {
 // Deprecated:
 func (xcTestHTMLReport) installCmd(branch InstallBranch) *command.Model {
 	return command.New("brew", "install", fmt.Sprintf(xcHTMLReportRepository, branch))
+}
+
+func (xcTestHTMLReport) installViaScriptCmd(version string) *command.Model {
+	return command.New("/bin/sh", []string{"install.sh", version}...)
 }
 
 func (x xcTestHTMLReport) convertToHTMReportCmd() *command.Model {
