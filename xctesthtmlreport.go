@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
 
@@ -37,12 +38,12 @@ func (x xcTestHTMLReport) convertToHTMReportCmd() *command.Model {
 	return command.New("xchtmlreport", convertToHTMReportArgs(x)...)
 }
 
-// downloadInstallScript downloads the install script located on the master branch of the XCTestHTMLReport repository
+// installScript returns the install script located on the master branch of the XCTestHTMLReport repository
 // https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh
-func (x xcTestHTMLReport) downloadInstallScript() error {
+func (x xcTestHTMLReport) installScript() (string, error) {
 	resp, err := http.Get(xcHTMLReportInstallScriptURL)
 	if err != nil {
-		return fmt.Errorf("failed to call the %s, error: %v", xcHTMLReportInstallScriptURL, err)
+		return "", fmt.Errorf("failed to call the %s, error: %v", xcHTMLReportInstallScriptURL, err)
 	}
 	log.Debugf("Response status: %s", resp.Status)
 
@@ -52,7 +53,9 @@ func (x xcTestHTMLReport) downloadInstallScript() error {
 		}
 	}()
 
-	return nil
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(resp.Body)
+	return buf.String(), nil
 }
 
 //
