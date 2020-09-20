@@ -30,11 +30,8 @@ func latestGithubRelease(githubOrg, githubRepository string, accessToken stepcon
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return GithubRelease{}, fmt.Errorf("failed to call the %s, error: %v", url, err)
-	} else if resp.StatusCode != http.StatusOK {
-		return GithubRelease{}, fmt.Errorf("response status %v", resp.StatusCode)
 	}
 
-	log.Debugf("Response status: %s", resp.Status)
 	defer func() {
 		if cerr := resp.Body.Close(); cerr != nil {
 			log.Warnf("Failed to close response body, error: %v", cerr)
@@ -45,6 +42,12 @@ func latestGithubRelease(githubOrg, githubRepository string, accessToken stepcon
 	if err != nil {
 		return GithubRelease{}, fmt.Errorf("failed to read response body from the %s, error: %v", url, err)
 	}
+
+	if resp.StatusCode != http.StatusOK {
+		return GithubRelease{}, fmt.Errorf("response status %v, body: %s", resp.StatusCode, string(body))
+	}
+	log.Debugf("Response status: %s", resp.Status)
+
 	var githubRelease GithubRelease
 	if err := json.Unmarshal([]byte(body), &githubRelease); err != nil {
 		return githubRelease, fmt.Errorf("failed to parse latest Github Release JSON, ewrror: %v", err)
