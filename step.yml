@@ -22,7 +22,7 @@ toolkit:
     package_name: github.com/BirmacherAkos/bitrise-step-xctest-html-report
 
 inputs:
-  - github_access_token: $GITHUB_ACCESS_TOKEN
+  - github_access_token:
     opts:
       title: Github Personal Access Token
       summary: Use this input to avoid Github rate limit issues for the XCTestHTMLReport download

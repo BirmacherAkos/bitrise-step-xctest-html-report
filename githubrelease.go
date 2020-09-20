@@ -25,7 +25,10 @@ func latestGithubRelease(githubOrg, githubRepository string, accessToken stepcon
 	if err != nil {
 		return GithubRelease{}, fmt.Errorf("failed to create new request for %s, error: %v", url, err)
 	}
-	req.Header.Set("Authorization", fmt.Sprintf("token %s", string(accessToken)))
+
+	if string(accessToken) != "" {
+		req.Header.Set("Authorization", fmt.Sprintf("token %s", string(accessToken)))
+	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
