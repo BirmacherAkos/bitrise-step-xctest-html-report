@@ -107,8 +107,8 @@ func main() {
 		failf("Failed to get current directory, error: %s", err)
 	}
 
-	var version string
-	if cfg.Version == "latest" {
+	version := cfg.Version
+	if version == "latest" {
 		log.Printf("Latest version selected, identify the latest version on Github")
 		release, err := latestGithubRelease(xcHTMLReportGithubOrg, xcHTMLReportGithubRepo, cfg.GithubAccessToken)
 		if err != nil {
