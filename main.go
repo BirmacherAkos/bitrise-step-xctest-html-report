@@ -19,9 +19,9 @@ type Config struct {
 	GithubAccessToken stepconf.Secret `env:"github_access_token"`
 
 	// XCHTMLReport
-	TestResults   string        `env:"test_result_path,required"`
-	GenerateJUnit bool          `env:"generate_junit,opt[yes,no]"`
-	Branch        InstallBranch `env:"install_branch,opt[master,develop]"`
+	TestResults   string `env:"test_result_path,required"`
+	GenerateJUnit bool   `env:"generate_junit,opt[yes,no]"`
+	Version       string `env:"version,required"`
 
 	// Common
 	OutputDir string `env:"output_dir,dir"`
