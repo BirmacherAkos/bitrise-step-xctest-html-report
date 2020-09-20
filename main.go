@@ -106,7 +106,7 @@ func main() {
 
 	version := "latest"
 	if version == "latest" {
-		release, err := latestGithubRelease(XcHTMLReportGithubOrg, XcHTMLReportGithubRepo)
+		release, err := latestGithubRelease(xcHTMLReportGithubOrg, xcHTMLReportGithubRepo)
 		if err != nil {
 			failf("Failed to identify the latest Github release of the XCTestHTMLReport")
 		}

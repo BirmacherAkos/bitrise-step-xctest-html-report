@@ -20,8 +20,8 @@ const (
 
 const xcHTMLReportRepository string = "https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/%s/xchtmlreport.rb"
 const xcHTMLReportInstallScriptURL string = "https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh"
-const XcHTMLReportGithubOrg string = "TitouanVanBelle"
-const XcHTMLReportGithubRepo string = "XCTestHTMLReport"
+const xcHTMLReportGithubOrg string = "TitouanVanBelle"
+const xcHTMLReportGithubRepo string = "XCTestHTMLReport"
 
 type xcTestHTMLReport struct {
 	verbose           bool
