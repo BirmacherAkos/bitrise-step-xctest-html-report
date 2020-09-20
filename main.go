@@ -100,7 +100,7 @@ func main() {
 	fmt.Println()
 
 	testResults := strings.Split(strings.TrimRight(cfg.TestResults, "\n"), "\n")
-	log.SetEnableDebugLog(true)
+	log.SetEnableDebugLog(cfg.Verbose)
 
 	dir, err := os.Getwd()
 	if err != nil {
@@ -115,7 +115,7 @@ func main() {
 			failf("Failed to identify the latest Github release of the XCTestHTMLReport")
 		}
 		version = release.TagName
-		fmt.Printf("Latest version: %s", version)
+		fmt.Printf("Latest version: %s\n", version)
 	}
 
 	x := xcTestHTMLReport{
