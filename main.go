@@ -197,6 +197,7 @@ func main() {
 	} else {
 		log.Successf("Already installed")
 	}
+	fmt.Println()
 
 	//
 	// Generate reports
@@ -205,6 +206,7 @@ func main() {
 		if cfg.GenerateJUnit {
 			info = "Generating html and JUnit report"
 		}
+
 		log.Infof(info)
 
 		cmd := x.convertToHTMReportCmd()
