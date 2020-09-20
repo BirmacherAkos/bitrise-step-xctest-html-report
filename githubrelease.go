@@ -31,7 +31,7 @@ func latestGithubRelease(githubOrg, githubRepository string, accessToken stepcon
 	if err != nil {
 		return GithubRelease{}, fmt.Errorf("failed to call the %s, error: %v", url, err)
 	} else if resp.StatusCode != http.StatusOK {
-		return GithubRelease{}, fmt.Errorf("response status %s")
+		return GithubRelease{}, fmt.Errorf("response status %v", resp.StatusCode)
 	}
 
 	log.Debugf("Response status: %s", resp.Status)

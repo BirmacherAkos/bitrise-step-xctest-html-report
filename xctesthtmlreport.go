@@ -61,7 +61,7 @@ func (x xcTestHTMLReport) installScript() (string, error) {
 	}()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("response status %s")
+		return "", fmt.Errorf("response status %v", resp.StatusCode)
 	}
 
 	buf := new(bytes.Buffer)

@@ -25,6 +25,7 @@ inputs:
   - github_access_token: $GITHUB_ACCESS_TOKEN
     opts:
       title: Github Personal Access Token
+      summary: Use this input to avoid Github rate limit issues for the XCTestHTMLReport download
       description: |-
         Use this input to avoid Github rate limit issues.
         See the github's guide: [Creating an access token for command-line use](https://help.github.com/articles/creating-an-access-token-for-command-line-use/),   
