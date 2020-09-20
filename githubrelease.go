@@ -37,7 +37,9 @@ func latestGithubRelease(githubOrg, githubRepository string) (GithubRelease, err
 		return GithubRelease{}, fmt.Errorf("failed to read response body from the %s, error: %v", url, err)
 	}
 	var githubRelease GithubRelease
-	json.Unmarshal([]byte(body), &githubRelease)
+	if err := json.Unmarshal([]byte(body), &githubRelease); err != nil {
+		return githubRelease, fmt.Errorf("failed to parse latest Github Release JSON, ewrror: %v", err)
+	}
 
 	return githubRelease, nil
 }

@@ -161,14 +161,20 @@ func main() {
 			log.Debugf("Write the install script to the install.sh file")
 			outFile, err := os.Create("install.sh")
 			// handle err
-			defer outFile.Close()
+			defer func() {
+				if cerr := outFile.Close(); err != nil {
+					log.Warnf("Failed to close the output file (install.sh) after writing in it, error: %v", cerr)
+				}
+			}()
 			_, err = outFile.WriteString(script)
 			if err != nil {
 				fmt.Printf("failed to write the install script to the install.sh file, error:  %v", err)
 			}
 
 			log.Debugf("Make executable the install.sh file")
-			os.Chmod("install.sh", 0777)
+			if err := os.Chmod("install.sh", 0777); err != nil {
+				log.Errorf("failed to change access permission of the install.sh file, error: %v", err)
+			}
 
 			log.Printf("Running install.sh")
 			cmd := x.installViaScriptCmd(x.version)

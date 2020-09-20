@@ -61,7 +61,9 @@ func (x xcTestHTMLReport) installScript() (string, error) {
 	}()
 
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)
+	if _, err := buf.ReadFrom(resp.Body); err != nil {
+		return "", fmt.Errorf("failed to copy the response body to a buffer, error: %v", err)
+	}
 	return buf.String(), nil
 }
 
