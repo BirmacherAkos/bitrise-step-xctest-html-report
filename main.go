@@ -112,7 +112,7 @@ func main() {
 		log.Printf("Latest version selected, identify the latest version on Github")
 		release, err := latestGithubRelease(xcHTMLReportGithubOrg, xcHTMLReportGithubRepo, cfg.GithubAccessToken)
 		if err != nil {
-			failf("Failed to identify the latest Github release of the XCTestHTMLReport")
+			failf("Failed to identify the latest Github release of the XCTestHTMLReport, error: %s\nTry to add Github Access Token to the step to avoid API rate limit.", err)
 		}
 		version = release.TagName
 		fmt.Printf("Latest version: %s\n", version)
