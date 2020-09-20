@@ -110,24 +110,39 @@ func main() {
 	}
 
 	//
-	// Install
+	// Install via Brew
+	// Deprecated
+	// {
+	// 	log.Infof("Install XCTestHTMLReport via brew")
+
+	// 	cmd := x.installCmd(cfg.Branch)
+	// 	cmd.SetDir(dir).
+	// 		SetStdout(os.Stdout).
+	// 		SetStderr(os.Stderr)
+
+	// 	log.Printf("$ %s", cmd.PrintableCommandArgs())
+
+	// 	if err := cmd.Run(); err != nil {
+	// 		log.Warnf("Try to change the install branch of the XCTestHTMLReport")
+	// 		failf("Failed to install XCTestHTMLReport, error: %s", err)
+	// 	}
+
+	// 	log.Successf("XCTestHTMLReport successfully installed")
+	// 	fmt.Println()
+	// }
+
+	// Install via install script
 	{
-		log.Infof("Install XCTestHTMLReport via brew")
+		log.Infof("Install XCTestHTMLReport via install script")
+		log.Printf("Download install script")
+		if err := x.downloadInstallScript(); err != nil {
+			failf("Failed to download the install script of the XCTestHTMLReport")
+		}
 
 		cmd := x.installCmd(cfg.Branch)
 		cmd.SetDir(dir).
 			SetStdout(os.Stdout).
 			SetStderr(os.Stderr)
-
-		log.Printf("$ %s", cmd.PrintableCommandArgs())
-
-		if err := cmd.Run(); err != nil {
-			log.Warnf("Try to change the install branch of the XCTestHTMLReport")
-			failf("Failed to install XCTestHTMLReport, error: %s", err)
-		}
-
-		log.Successf("XCTestHTMLReport successfully installed")
-		fmt.Println()
 	}
 
 	//
