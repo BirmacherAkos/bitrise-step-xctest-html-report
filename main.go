@@ -8,6 +8,7 @@ import (
 
 	"github.com/bitrise-io/go-steputils/stepconf"
 	"github.com/bitrise-io/go-steputils/tools"
+	"github.com/bitrise-io/go-utils/errorutil"
 	"github.com/bitrise-io/go-utils/log"
 	"github.com/bitrise-io/go-utils/pathutil"
 )
@@ -96,17 +97,27 @@ func main() {
 	fmt.Println()
 
 	testResults := strings.Split(strings.TrimRight(cfg.TestResults, "\n"), "\n")
-	log.SetEnableDebugLog(cfg.Verbose)
+	log.SetEnableDebugLog(true)
 
 	dir, err := os.Getwd()
 	if err != nil {
 		failf("Failed to get current directory, error: %s", err)
 	}
 
+	version := "latest"
+	if version == "latest" {
+		release, err := latestGithubRelease(XcHTMLReportGithubOrg, XcHTMLReportGithubRepo)
+		if err != nil {
+			failf("Failed to identify the latest Github release of the XCTestHTMLReport")
+		}
+		version = release.TagName
+	}
+
 	x := xcTestHTMLReport{
 		verbose:           cfg.Verbose,
 		generateJUnit:     cfg.GenerateJUnit,
 		resultBundlePaths: testResults,
+		version:           version,
 	}
 
 	//
@@ -131,18 +142,49 @@ func main() {
 	// 	fmt.Println()
 	// }
 
-	// Install via install script
-	{
-		log.Infof("Install XCTestHTMLReport via install script")
-		log.Printf("Download install script")
-		if err := x.downloadInstallScript(); err != nil {
-			failf("Failed to download the install script of the XCTestHTMLReport")
-		}
+	log.Infof("Check if XCTestHTMLReport installed")
+	if !installedInPath("xchtmlreport") {
+		log.Printf("Not installed yet")
+		fmt.Println()
 
-		cmd := x.installCmd(cfg.Branch)
-		cmd.SetDir(dir).
-			SetStdout(os.Stdout).
-			SetStderr(os.Stderr)
+		// Install via install script
+		{
+			log.Infof("Install XCTestHTMLReport via install script")
+
+			log.Printf("Download install script from the XCTestHTMLReport repository and write it to the install.sh file")
+			script, err := x.installScript()
+			if err != nil {
+				failf("Failed to download the install script of the XCTestHTMLReport")
+			}
+			log.Debugf("Install script:\n%s\n", script)
+
+			log.Debugf("Write the install script to the install.sh file")
+			outFile, err := os.Create("install.sh")
+			// handle err
+			defer outFile.Close()
+			_, err = outFile.WriteString(script)
+			if err != nil {
+				fmt.Printf("failed to write the install script to the install.sh file, error:  %v", err)
+			}
+
+			log.Debugf("Make executable the install.sh file")
+			os.Chmod("install.sh", 0777)
+
+			log.Printf("Running install.sh")
+			cmd := x.installViaScriptCmd(x.version)
+			cmd.SetDir(dir).
+				SetStdout(os.Stdout).
+				SetStderr(os.Stderr)
+
+			if err := cmd.Run(); err != nil {
+				if errorutil.IsExitStatusError(err) {
+					failf("Command `tojunit` failed to install, error: %s", err)
+				}
+				failf("Failed to run command `tojunit`, %s", err)
+			}
+		}
+	} else {
+		log.Successf("Already installed")
 	}
 
 	//
