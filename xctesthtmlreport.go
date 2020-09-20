@@ -25,7 +25,7 @@ type xcTestHTMLReport struct {
 
 //
 // Reciever methods
-
+// Deprecated:
 func (xcTestHTMLReport) installCmd(branch InstallBranch) *command.Model {
 	return command.New("brew", "install", fmt.Sprintf(xcHTMLReportRepository, branch))
 }
