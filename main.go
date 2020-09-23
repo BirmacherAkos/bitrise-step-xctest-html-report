@@ -13,6 +13,8 @@ import (
 	"github.com/bitrise-io/go-utils/pathutil"
 )
 
+const fallbackVersion = "2.0.0"
+
 // Config ...
 type Config struct {
 	// Authentication
@@ -112,10 +114,12 @@ func main() {
 		log.Printf("Latest version selected, identify the latest version on Github")
 		release, err := latestGithubRelease(xcHTMLReportGithubOrg, xcHTMLReportGithubRepo, cfg.GithubAccessToken)
 		if err != nil {
-			failf("Failed to identify the latest Github release of the XCTestHTMLReport, error: %s\nTry to add Github Access Token to the step to avoid API rate limit.", err)
+			log.Warnf("Failed to identify the latest Github release of the XCTestHTMLReport, error: %s\nTry to add Github Access Token to the step to avoid API rate limit.\nUsing the known latest version: %s", err, fallbackVersion)
+			version = fallbackVersion
+		} else {
+			version = release.TagName
+			fmt.Printf("Latest version: %s\n", version)
 		}
-		version = release.TagName
-		fmt.Printf("Latest version: %s\n", version)
 	}
 
 	x := xcTestHTMLReport{
